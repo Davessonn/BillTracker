@@ -2,6 +2,8 @@ package com.davezone.billtracker.localtax.service;
 
 import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.localtax.repository.LocalTaxRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +31,27 @@ public class LocalTaxService {
     }
 
     //Save new local tax
+    @Transactional
     public LocalTax saveLocalTax(LocalTax localTax) {
         return localTaxRepository.save(localTax);
     }
 
     //Update local tax
+    @Transactional
     public LocalTax updateLocalTax(LocalTax localTax) {
         return localTaxRepository.save(localTax);
     }
 
     //Delete local tax by id
-    public void deleteLocalTax(long id) {
-        localTaxRepository.deleteById(id);
+    @Transactional
+    public void deleteLocalTaxById(long id) {
+        if (localTaxRepository.existsById(id)) {
+            localTaxRepository.deleteById(id);
+        }
+    }
+
+    public boolean existById(long id) {
+        return localTaxRepository.existsById(id);
     }
 
 

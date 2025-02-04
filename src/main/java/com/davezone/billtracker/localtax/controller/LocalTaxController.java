@@ -6,13 +6,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/localTax")
 public class LocalTaxController {
 
@@ -34,23 +33,35 @@ public class LocalTaxController {
     }
 
     //Get method for search local tax by id
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
+    @Transactional
     public ResponseEntity<LocalTax> getLocalTaxById (@PathVariable("id") long id) {
         Optional<LocalTax> searchedLocalTax= localTaxService.getLocalTaxById(id);
         return ResponseEntity.of(searchedLocalTax);
     }
 
     //Post method for create new local tax
-    @PostMapping(value = "/create")
-    public ResponseEntity<LocalTax> createLocalTax (@RequestBody LocalTax newLocalTax) {
-        if (newLocalTax == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping( "/create")
+    public ResponseEntity<?> createLocalTax(@RequestBody LocalTax newLocalTax) {
         try {
-            LocalTax savedLocalTax = localTaxService.saveLocalTax(newLocalTax);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedLocalTax);
+            LocalTax createdLocalTax = localTaxService.saveLocalTax(newLocalTax);
+            if (createdLocalTax == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdLocalTax);
+            //return ResponseEntity.ok(createdLocalTax);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt az adatok mentése során!");
         }
+    }
+
+    //Delete method for delete by id
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteLocalTax(@PathVariable("id") long id) {
+        if (!localTaxService.existById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
+        }
+        localTaxService.deleteLocalTaxById(id);
+        return ResponseEntity.ok("Sikeresen törölve: " + id);
     }
 }
