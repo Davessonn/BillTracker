@@ -24,6 +24,7 @@ public class LocalTaxController {
 
     //Get method for querry all local taxes
     @GetMapping(value = "/all")
+    //TODO Pagination? (Pageable)
     public ResponseEntity<List<LocalTax>> getAllLocalTaxes() {
         List<LocalTax> localTaxes = localTaxService.getAllLocalTaxes();
         if (localTaxes.isEmpty()) {
@@ -42,6 +43,7 @@ public class LocalTaxController {
 
     //Post method for create new local tax
     @PostMapping( "/create")
+    //TODO @Valid in parameters for ensure the user input validation
     public ResponseEntity<?> createLocalTax(@RequestBody LocalTax newLocalTax) {
         try {
             LocalTax createdLocalTax = localTaxService.saveLocalTax(newLocalTax);
