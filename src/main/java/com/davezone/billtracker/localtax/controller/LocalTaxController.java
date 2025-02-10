@@ -24,7 +24,7 @@ public class LocalTaxController {
 
     //Get method for querry all local taxes
     @GetMapping(value = "/all")
-    //TODO Pagination? (Pageable)
+    //TODO Pagination?? (Pageable)
     public ResponseEntity<List<LocalTax>> getAllLocalTaxes() {
         List<LocalTax> localTaxes = localTaxService.getAllLocalTaxes();
         if (localTaxes.isEmpty()) {
