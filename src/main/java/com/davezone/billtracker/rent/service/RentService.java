@@ -2,12 +2,12 @@ package com.davezone.billtracker.rent.service;
 
 import com.davezone.billtracker.rent.model.Rent;
 import com.davezone.billtracker.rent.repository.RentRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RentService {
@@ -25,8 +25,8 @@ public class RentService {
     }
 
     //findById
-    public Rent getRentById (Long id) {
-        return rentRepository.getById(id);
+    public Optional<Rent> getRentById (Long id) {
+        return rentRepository.findById(id);
     }
 
     //delete
@@ -42,6 +42,10 @@ public class RentService {
 
 
     //update
+    @Transactional
+    public Rent updateRent (Rent updatedRent) {
+        return rentRepository.save(updatedRent);
+    }
 
 
 }

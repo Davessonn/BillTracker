@@ -66,4 +66,14 @@ public class LocalTaxController {
         localTaxService.deleteLocalTaxById(id);
         return ResponseEntity.ok("Sikeresen törölve: " + id);
     }
+
+    @PostMapping("/edit/{id}")
+    //TODO letesztelni!
+    public ResponseEntity<?> updateLocalTax (@PathVariable("id") long id, @RequestBody LocalTax editedLocalTax) {
+        if (!localTaxService.existById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
+        }
+        localTaxService.updateLocalTax(editedLocalTax);
+        return ResponseEntity.ok("A módosítás sikeres volt!");
+    }
 }
