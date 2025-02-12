@@ -3,6 +3,7 @@ package com.davezone.billtracker.localtax.service;
 import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.localtax.repository.LocalTaxRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class LocalTaxService {
 
     private final LocalTaxRepository localTaxRepository;
+
 
     @Autowired
     public LocalTaxService(LocalTaxRepository localTaxRepository) {
@@ -24,6 +27,7 @@ public class LocalTaxService {
 
     //Get all local taxes
     public ResponseEntity<List<LocalTax>> getAllLocalTaxes() {
+        log.debug("Ez egy teszt");
         List<LocalTax> localTaxes = localTaxRepository.findAll();
         if (localTaxes.isEmpty()) {
             return ResponseEntity.noContent().build();

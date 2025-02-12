@@ -1,0 +1,41 @@
+<configuration>
+
+    <!-- Alapértelmezett konzol logolás -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] [%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LocalTax log fájl -->
+    <appender name="LOCAL_TAX_LOGS" class="ch.qos.logback.core.FileAppender">
+        <file>logs/localTaxLogs.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] [%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Rent log fájl -->
+    <appender name="RENT_LOGS" class="ch.qos.logback.core.FileAppender">
+        <file>logs/rentLogs.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] [%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LocalTax osztályokhoz tartozó logger -->
+    <logger name="com.davezone.billtracker.localtax" level="DEBUG">
+        <appender-ref ref="LOCAL_TAX_LOGS"/>
+    </logger>
+
+    <!-- Rent osztályokhoz tartozó logger -->
+    <logger name="com.davezone.billtracker.rent" level="DEBUG">
+        <appender-ref ref="RENT_LOGS"/>
+    </logger>
+
+    <!-- Alapértelmezett root logger (amelyik a konzolra ír) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
