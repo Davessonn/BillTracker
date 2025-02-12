@@ -1,19 +1,17 @@
 package com.davezone.billtracker.localtax.controller;
 
+import com.davezone.billtracker.base.controller.BaseController;
 import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.localtax.service.LocalTaxService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/localTax")
-public class LocalTaxController {
+public class LocalTaxController implements BaseController<LocalTax, Long> {
 
     private final LocalTaxService localTaxService;
 
@@ -23,57 +21,39 @@ public class LocalTaxController {
     }
 
     //Get method for querry all local taxes
-    @GetMapping(value = "/all")
     //TODO Pagination?? (Pageable)
-    public ResponseEntity<List<LocalTax>> getAllLocalTaxes() {
-        List<LocalTax> localTaxes = localTaxService.getAllLocalTaxes();
-        if (localTaxes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(localTaxes);
+    @GetMapping(value = "/all")
+    @Override
+    public ResponseEntity<List<LocalTax>> getAll() {
+        return localTaxService.getAllLocalTaxes();
     }
 
     //Get method for search local tax by id
     @GetMapping("/{id}")
-    @Transactional
-    public ResponseEntity<LocalTax> getLocalTaxById (@PathVariable("id") long id) {
-        Optional<LocalTax> searchedLocalTax= localTaxService.getLocalTaxById(id);
-        return ResponseEntity.of(searchedLocalTax);
+    @Override
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
+        return localTaxService.getLocalTaxById(id);
     }
 
     //Post method for create new local tax
-    @PostMapping( "/create")
     //TODO @Valid in parameters for ensure the user input validation
-    public ResponseEntity<?> createLocalTax(@RequestBody LocalTax newLocalTax) {
-        try {
-            LocalTax createdLocalTax = localTaxService.saveLocalTax(newLocalTax);
-            if (createdLocalTax == null) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdLocalTax);
-            //return ResponseEntity.ok(createdLocalTax);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt az adatok mentése során!");
-        }
+    @PostMapping( "/create")
+    @Override
+    public ResponseEntity<?> create(@RequestBody LocalTax newLocalTax) {
+        return localTaxService.createLocalTax(newLocalTax);
     }
 
     //Delete method for delete by id
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteLocalTax(@PathVariable("id") long id) {
-        if (!localTaxService.existById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
-        }
-        localTaxService.deleteLocalTaxById(id);
-        return ResponseEntity.ok("Sikeresen törölve: " + id);
+    @Override
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+        return localTaxService.deleteLocalTaxById(id);
     }
 
-    @PostMapping("/edit/{id}")
     //TODO letesztelni!
-    public ResponseEntity<?> updateLocalTax (@PathVariable("id") long id, @RequestBody LocalTax editedLocalTax) {
-        if (!localTaxService.existById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
-        }
-        localTaxService.updateLocalTax(editedLocalTax);
-        return ResponseEntity.ok("A módosítás sikeres volt!");
+    @PutMapping("/edit/{id}")
+    @Override
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody LocalTax editedLocalTax) {
+        return localTaxService.updateLocalTax(id, editedLocalTax);
     }
 }
