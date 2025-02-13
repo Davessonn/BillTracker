@@ -4,8 +4,7 @@ import com.davezone.billtracker.base.controller.BaseController;
 import com.davezone.billtracker.rent.model.Rent;
 import com.davezone.billtracker.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,28 +18,33 @@ public class RentController implements BaseController<Rent, Long> {
         this.rentService = rentService;
     }
 
+    @GetMapping("/all")
     @Override
     public ResponseEntity<List<Rent>> getAll() {
-        return null;
+        return rentService.getAll();
     }
 
+    @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> getById(Long aLong) {
-        return null;
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return rentService.getById(id);
     }
 
+    @PostMapping("/create")
     @Override
-    public ResponseEntity<?> create(Rent entity) {
-        return null;
+    public ResponseEntity<?> create(@RequestBody Rent entity) {
+        return rentService.create(entity);
     }
 
+    @DeleteMapping("/delete/{id}")
     @Override
-    public ResponseEntity<String> delete(Long aLong) {
-        return null;
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        return rentService.delete(id);
     }
 
+    @PutMapping("/edit/{id}")
     @Override
-    public ResponseEntity<?> update(Long aLong, Rent entity) {
-        return null;
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Rent entity) {
+        return rentService.update(id, entity);
     }
 }

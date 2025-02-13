@@ -25,14 +25,14 @@ public class LocalTaxController implements BaseController<LocalTax, Long> {
     @GetMapping(value = "/all")
     @Override
     public ResponseEntity<List<LocalTax>> getAll() {
-        return localTaxService.getAllLocalTaxes();
+        return localTaxService.getAll();
     }
 
     //Get method for search local tax by id
     @GetMapping("/{id}")
     @Override
     public ResponseEntity<?> getById(@PathVariable("id") Long id) {
-        return localTaxService.getLocalTaxById(id);
+        return localTaxService.getById(id);
     }
 
     //Post method for create new local tax
@@ -40,20 +40,20 @@ public class LocalTaxController implements BaseController<LocalTax, Long> {
     @PostMapping( "/create")
     @Override
     public ResponseEntity<?> create(@RequestBody LocalTax newLocalTax) {
-        return localTaxService.createLocalTax(newLocalTax);
+        return localTaxService.create(newLocalTax);
     }
 
     //Delete method for delete by id
     @DeleteMapping("/delete/{id}")
     @Override
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        return localTaxService.deleteLocalTaxById(id);
+        return localTaxService.delete(id);
     }
 
     //TODO letesztelni!
     @PutMapping("/edit/{id}")
     @Override
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody LocalTax editedLocalTax) {
-        return localTaxService.updateLocalTax(id, editedLocalTax);
+        return localTaxService.update(id, editedLocalTax);
     }
 }
