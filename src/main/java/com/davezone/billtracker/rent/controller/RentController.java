@@ -5,7 +5,6 @@ import com.davezone.billtracker.rent.model.Rent;
 import com.davezone.billtracker.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -26,7 +25,7 @@ public class RentController implements BaseController<Rent, Long> {
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
         return rentService.getById(id);
     }
 
@@ -38,13 +37,13 @@ public class RentController implements BaseController<Rent, Long> {
 
     @DeleteMapping("/delete/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         return rentService.delete(id);
     }
 
     @PutMapping("/edit/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Rent entity) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody Rent entity) {
         return rentService.update(id, entity);
     }
 }

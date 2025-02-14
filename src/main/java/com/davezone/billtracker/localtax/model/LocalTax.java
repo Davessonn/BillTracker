@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDate;
 
@@ -39,7 +38,12 @@ public class LocalTax {
 
     @Override
     public String toString() {
-        return "LocalTax{id=" + id + ", referenceNumber=" + referenceNumber + ", date=" + date + ", amount=" + amount + ", dueDate=" + dueDate + ", payed=" + payed + "}";
+        return "LocalTax id=" + id
+                + ", referenceNumber=" + referenceNumber
+                + ", date=" + date
+                + ", amount=" + amount
+                + ", dueDate=" + dueDate
+                + ", payed=" + payed + "}";
     }
 
 }

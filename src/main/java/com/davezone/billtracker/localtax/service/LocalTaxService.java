@@ -27,11 +27,6 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
 
 
     @Override
-    public boolean existById(Long id) {
-        return localTaxRepository.existsById(id);
-    }
-
-    @Override
     public ResponseEntity<List<LocalTax>> getAll() {
         List<LocalTax> localTaxes = localTaxRepository.findAll();
         if (localTaxes.isEmpty()) {
@@ -45,7 +40,7 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     @Override
     public ResponseEntity<?> getById(Long id) {
         Optional<LocalTax> searchedLocalTax= localTaxRepository.findById(id);
-        if (!existById(id)) {
+        if (!localTaxRepository.existsById(id)) {
             log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó!");
         }
@@ -75,7 +70,7 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     @Transactional
     public ResponseEntity<String> delete(Long id) {
         try {
-            if (!existById(id)) {
+            if (!localTaxRepository.existsById(id)) {
                 log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
             }
@@ -94,7 +89,7 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     @Override
     @Transactional
     public ResponseEntity<?> update(Long id, LocalTax localTax) {
-        if (!existById(id)) {
+        if (!localTaxRepository.existsById(id)) {
             log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
         }

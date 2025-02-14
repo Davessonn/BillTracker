@@ -12,5 +12,4 @@ public interface BaseService <T, ID>{
     ResponseEntity<?> create (T entity);
     ResponseEntity<String> delete (ID id);
     ResponseEntity<?> update (ID id, T entity);
-    boolean existById (ID id);
 }

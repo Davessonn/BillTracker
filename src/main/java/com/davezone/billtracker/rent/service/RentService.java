@@ -1,17 +1,16 @@
 package com.davezone.billtracker.rent.service;
 
 import com.davezone.billtracker.base.service.BaseService;
-import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.rent.model.Rent;
 import com.davezone.billtracker.rent.repository.RentRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +19,12 @@ import java.util.Optional;
 public class RentService implements BaseService<Rent, Long> {
 
     public final RentRepository rentRepository;
+    private final ClientHttpRequestFactorySettings clientHttpRequestFactorySettings;
 
     @Autowired
-    public RentService(RentRepository rentRepository) {
+    public RentService(RentRepository rentRepository, ClientHttpRequestFactorySettings clientHttpRequestFactorySettings) {
         this.rentRepository = rentRepository;
+        this.clientHttpRequestFactorySettings = clientHttpRequestFactorySettings;
     }
 
 
@@ -41,7 +42,7 @@ public class RentService implements BaseService<Rent, Long> {
     @Override
     public ResponseEntity<?> getById(Long id) {
         Optional<Rent> searchedRent = rentRepository.findById(id);
-        if (!existById(id)) {
+        if (!rentRepository.existsById(id)) {
             log.debug("Nem található ezzel az ID-val lakbér: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen lakbér!");
         }
@@ -72,7 +73,7 @@ public class RentService implements BaseService<Rent, Long> {
     @Override
     public ResponseEntity<String> delete(Long id) {
         try {
-            if (!existById(id)) {
+            if (!rentRepository.existsById(id)) {
                 log.debug("Nem található ezzel az ID-val lakbér: " + id);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen lakbér!");
             }
@@ -92,17 +93,12 @@ public class RentService implements BaseService<Rent, Long> {
     @Transactional
     @Override
     public ResponseEntity<?> update(Long id, Rent rent) {
-        if (!existById(id)) {
+        if (!rentRepository.existsById(id)) {
             log.debug("Nem található ezzel az ID-val lakbér: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen lakbér!");
         }
         rentRepository.save(rent);
         log.debug("A módosítás sikeres volt, lakbér: \n" + rent);
         return ResponseEntity.ok("A módosítás sikeres volt!");
-    }
-
-    @Override
-    public boolean existById(Long id) {
-        return false;
     }
 }
