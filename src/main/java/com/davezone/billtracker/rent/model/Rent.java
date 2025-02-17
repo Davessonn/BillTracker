@@ -17,8 +17,8 @@ public class Rent {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "invoice_number", nullable = false)
-    private String invoiceNumber;
+    @Column(name = "reference_number", nullable = false)
+    private String referenceNumber;
     @Column(name = "invoice_date", nullable = false)
     private LocalDate invoiceDate;
     @Column(name = "due_date", nullable = false)
@@ -42,7 +42,7 @@ public class Rent {
     @Override
     public String toString() {
         return "Rent id=" + id
-                + ", invoice number=" + invoiceNumber
+                + ", reference number=" + referenceNumber
                 + ", invoice date=" + invoiceDate
                 + ", due date=" + dueDate
                 + ", start date=" + startDate
