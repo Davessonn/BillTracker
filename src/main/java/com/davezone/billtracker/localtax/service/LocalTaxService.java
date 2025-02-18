@@ -41,10 +41,10 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     public ResponseEntity<?> getById(Long id) {
         Optional<LocalTax> searchedLocalTax= localTaxRepository.findById(id);
         if (!localTaxRepository.existsById(id)) {
-            log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
+            log.debug(String.format("Nem található ezzel az ID-val kommunális adó: " + id));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó!");
         }
-        log.debug("Kommunális adó lekérdezése ID alapján sikeres volt, " + id);
+        log.debug(String.format("Kommunális adó lekérdezése ID alapján sikeres volt, " + id));
         return ResponseEntity.of(searchedLocalTax);
     }
 
@@ -71,7 +71,7 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     public ResponseEntity<String> delete(Long id) {
         try {
             if (!localTaxRepository.existsById(id)) {
-                log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
+                log.debug(String.format("Nem található ezzel az ID-val kommunális adó: " + id));
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
             }
             localTaxRepository.deleteById(id);
