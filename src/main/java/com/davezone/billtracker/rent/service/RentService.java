@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class RentService implements BaseService<Rent, Long> {
 
-    public final RentRepository rentRepository;
+    private final RentRepository rentRepository;
     private final ClientHttpRequestFactorySettings clientHttpRequestFactorySettings;
 
     @Autowired
@@ -54,10 +54,10 @@ public class RentService implements BaseService<Rent, Long> {
     @Override
     public ResponseEntity<?> create(Rent newRent) {
         try {
-            Rent createdRent = rentRepository.save(newRent);
-            if (createdRent == null) {
+            if (newRent == null) {
                 return ResponseEntity.noContent().build();
             }
+            Rent createdRent = rentRepository.save(newRent);
             log.debug("Lakbér sikeresen létrehozva:\n" + createdRent);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdRent);
 

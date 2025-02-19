@@ -43,7 +43,7 @@ public class RentController implements BaseController<Rent, Long> {
 
     @PutMapping("/edit/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody Rent entity) {
-        return rentService.update(id, entity);
+    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody Rent rent) {
+        return rentService.update(id, rent);
     }
 }
