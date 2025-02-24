@@ -3,9 +3,11 @@ package com.davezone.billtracker.localtax.service;
 import com.davezone.billtracker.base.service.BaseService;
 import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.localtax.repository.LocalTaxRepository;
+import com.davezone.billtracker.rent.model.Rent;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,11 +91,20 @@ public class LocalTaxService implements BaseService<LocalTax, Long> {
     @Override
     @Transactional
     public ResponseEntity<?> update(Long id, LocalTax localTax) {
-        if (!localTaxRepository.existsById(id)) {
+        Optional<LocalTax> existingLocalTax = localTaxRepository.findById(id);
+        if (existingLocalTax.isEmpty()) {
             log.debug("Nem található ezzel az ID-val kommunális adó: " + id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen kommunális adó!");
         }
-        localTaxRepository.save(localTax);
+        // Meglévő entitás frissítése
+        LocalTax updatedLocalTax = existingLocalTax.get();
+        updatedLocalTax.setReferenceNumber(localTax.getReferenceNumber());
+        updatedLocalTax.setDate(localTax.getDate());
+        updatedLocalTax.setAmount(localTax.getAmount());
+        updatedLocalTax.setDueDate(localTax.getDueDate());
+        updatedLocalTax.setPayed(localTax.isPayed());
+
+        localTaxRepository.save(updatedLocalTax);
         log.debug("A módosítás sikeres volt, kommunális adó: \n" + localTax);
         return ResponseEntity.ok("A módosítás sikeres volt!");
     }

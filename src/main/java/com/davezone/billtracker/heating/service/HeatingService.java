@@ -3,6 +3,7 @@ package com.davezone.billtracker.heating.service;
 import com.davezone.billtracker.base.service.BaseService;
 import com.davezone.billtracker.heating.model.Heating;
 import com.davezone.billtracker.heating.repository.HeatingRepository;
+import com.davezone.billtracker.localtax.model.LocalTax;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,8 +86,28 @@ public class HeatingService implements BaseService<Heating, Long> {
 
     @Override
     @Transactional
-    //TODO Create update method
-    public ResponseEntity<?> update(Long id, Heating updatableHeating) {
-        return null;
+    public ResponseEntity<?> update(Long id, Heating heating) {
+        Optional<Heating> existingHeating = heatingRepository.findById(id);
+        if (existingHeating.isEmpty()) {
+            log.debug("Nem található ezzel az ID-val fűtés számla: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nem található ilyen fűtés számla!");
+        }
+        // Meglévő entitás frissítése
+        Heating updatedHeating = existingHeating.get();
+        updatedHeating.setReferenceNumber(heating.getReferenceNumber());
+        updatedHeating.setInvoiceDate(heating.getInvoiceDate());
+        updatedHeating.setDueDate(heating.getDueDate());
+        updatedHeating.setHeatingBaseFee(heating.getHeatingBaseFee());
+        updatedHeating.setHeatingStartDate(heating.getHeatingStartDate());
+        updatedHeating.setHeatingEndDate(heating.getHeatingEndDate());
+        updatedHeating.setHeatingBaseFee(heating.getHeatingBaseFee());
+        updatedHeating.setWaterHeatingFee(heating.getWaterHeatingFee());
+        updatedHeating.setPreviousMeterReading(heating.getPreviousMeterReading());
+        updatedHeating.setCurrentMeterReading(heating.getCurrentMeterReading());
+
+
+        heatingRepository.save(updatedHeating);
+        log.debug("A módosítás sikeres volt, fűtés számla: \n" + heating);
+        return ResponseEntity.ok("A módosítás sikeres volt!");
     }
 }

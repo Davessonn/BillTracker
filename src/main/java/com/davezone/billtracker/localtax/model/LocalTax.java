@@ -1,6 +1,7 @@
 package com.davezone.billtracker.localtax.model;
 
 
+import com.davezone.billtracker.category.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,10 @@ public class LocalTax {
     @Column(name = "payed", nullable = false)
     private boolean payed;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    private Category category;
+
     public void setAmount(int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
@@ -43,7 +48,8 @@ public class LocalTax {
                 + ", date=" + date
                 + ", amount=" + amount
                 + ", dueDate=" + dueDate
-                + ", payed=" + payed + "}";
+                + ", payed=" + payed
+                + ", category name=" + category.getName() + "}";
     }
 
 }

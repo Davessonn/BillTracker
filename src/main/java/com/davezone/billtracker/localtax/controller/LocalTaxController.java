@@ -3,6 +3,7 @@ package com.davezone.billtracker.localtax.controller;
 import com.davezone.billtracker.base.controller.BaseController;
 import com.davezone.billtracker.localtax.model.LocalTax;
 import com.davezone.billtracker.localtax.service.LocalTaxService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +37,9 @@ public class LocalTaxController implements BaseController<LocalTax, Long> {
     }
 
     //Post method for create new local tax
-    //TODO @Valid in parameters for ensure the user input validation
     @PostMapping( "/create")
     @Override
-    public ResponseEntity<?> create(@RequestBody LocalTax newLocalTax) {
+    public ResponseEntity<?> create(@Valid @RequestBody LocalTax newLocalTax) {
         return localTaxService.create(newLocalTax);
     }
 
@@ -50,7 +50,6 @@ public class LocalTaxController implements BaseController<LocalTax, Long> {
         return localTaxService.delete(id);
     }
 
-    //TODO letesztelni!
     @PutMapping("/edit/{id}")
     @Override
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody LocalTax editedLocalTax) {

@@ -1,5 +1,6 @@
 package com.davezone.billtracker.heating.model;
 
+import com.davezone.billtracker.category.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,5 +44,27 @@ public class Heating {
     @Column (name = "total_cost", nullable = false)
     private int totalCost;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    private Category category;
 
+    @Override
+    public String toString() {
+        return "Heating{" +
+                "id=" + id +
+                ", referenceNumber='" + referenceNumber + '\'' +
+                ", invoiceDate=" + invoiceDate +
+                ", dueDate=" + dueDate +
+                ", heatingBaseFee=" + heatingBaseFee +
+                ", heatingStartDate=" + heatingStartDate +
+                ", heatingEndDate=" + heatingEndDate +
+                ", waterHeatingFee=" + waterHeatingFee +
+                ", previousMeterReading=" + previousMeterReading +
+                ", currentMeterReading=" + currentMeterReading +
+                ", waterHeatingStartDate=" + waterHeatingStartDate +
+                ", waterHeatingEndDate=" + waterHeatingEndDate +
+                ", totalCost=" + totalCost +
+                ", category=" + category.getName() +
+                '}';
+    }
 }

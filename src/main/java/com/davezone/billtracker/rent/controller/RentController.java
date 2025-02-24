@@ -3,6 +3,7 @@ package com.davezone.billtracker.rent.controller;
 import com.davezone.billtracker.base.controller.BaseController;
 import com.davezone.billtracker.rent.model.Rent;
 import com.davezone.billtracker.rent.service.RentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -31,7 +32,7 @@ public class RentController implements BaseController<Rent, Long> {
 
     @PostMapping("/create")
     @Override
-    public ResponseEntity<?> create(@RequestBody Rent entity) {
+    public ResponseEntity<?> create(@Valid @RequestBody Rent entity) {
         return rentService.create(entity);
     }
 

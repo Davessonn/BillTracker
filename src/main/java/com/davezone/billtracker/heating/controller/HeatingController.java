@@ -3,6 +3,7 @@ package com.davezone.billtracker.heating.controller;
 import com.davezone.billtracker.base.controller.BaseController;
 import com.davezone.billtracker.heating.model.Heating;
 import com.davezone.billtracker.heating.service.HeatingService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class HeatingController implements BaseController<Heating, Long> {
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Heating newheating) {
+    public ResponseEntity<?> create(@Valid @RequestBody Heating newheating) {
         return heatingService.create(newheating);
     }
 
