@@ -20,7 +20,7 @@ public class LocalTax {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "reference_number", nullable = false)
-    private int referenceNumber;
+    private String referenceNumber;
     @Column(name = "date", nullable = false)
     private LocalDate date;
     @Column(name = "amount", nullable = false)
